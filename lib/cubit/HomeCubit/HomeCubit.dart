@@ -27,6 +27,7 @@ class HomeCubit extends Cubit<HomeStates> {
         .get()
         .then((value) {
           model = UserModel.fromJson(value.data()!);
+          print(model);
           emit(HomeGetUserSuccessState());
     })
         .catchError((error) {
@@ -45,7 +46,7 @@ class HomeCubit extends Cubit<HomeStates> {
   List<String> titles = [
     'Home',
     'Chats',
-    'gcfc',
+    'New Post',
     'Users',
     'Settings'
   ];
