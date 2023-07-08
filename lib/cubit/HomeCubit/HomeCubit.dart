@@ -6,6 +6,7 @@ import 'package:chat_app/moduls/chats/chats_screen.dart';
 import 'package:chat_app/moduls/feeds/feeds_screen.dart';
 import 'package:chat_app/moduls/users/user_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,6 +28,7 @@ class HomeCubit extends Cubit<HomeStates> {
         .get()
         .then((value) {
           model = UserModel.fromJson(value.data()!);
+          print(model);
           emit(HomeGetUserSuccessState());
     })
         .catchError((error) {
@@ -45,7 +47,7 @@ class HomeCubit extends Cubit<HomeStates> {
   List<String> titles = [
     'Home',
     'Chats',
-    'gcfc',
+    'New Post',
     'Users',
     'Settings'
   ];
