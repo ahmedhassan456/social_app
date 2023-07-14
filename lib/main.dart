@@ -9,9 +9,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'BlocObserver/BlocObserver.dart';
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   DioHelper.init();
+  Bloc.observer = MyBlocObserver();
   await Firebase.initializeApp();
   await CacheHelper.init();
   bool checkUid = false;
