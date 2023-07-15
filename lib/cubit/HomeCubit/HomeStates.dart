@@ -13,3 +13,18 @@ class HomeGetUserLoadingState extends HomeStates{}
 class HomeChangeBottomNav extends HomeStates{}
 
 class HomeNewPost extends HomeStates{}
+
+class HomeProfileImagePickedSuccess extends HomeStates{}
+class HomeProfileImagePickedError extends HomeStates{}
+
+class HomeCoverImagePickedSuccess extends HomeStates{}
+class HomeCoverImagePickedError extends HomeStates{}
+
+class HomeUploadProfileImageSuccess extends HomeStates{}
+class HomeUploadProfileImageError extends HomeStates{}
+class HomeUploadCoverImageSuccess extends HomeStates{}
+class HomeUploadCoverImageError extends HomeStates{}
+
+class HomeUpdateCoverImageError extends HomeStates{}
+
+class HomeUpdateUserData extends HomeStates{}
