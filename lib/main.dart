@@ -82,6 +82,11 @@ class MyApp extends StatelessWidget {
               actionsIconTheme: IconThemeData(
                 color: Colors.black,
               ),
+              titleTextStyle: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0,
+              ),
             ),
             bottomNavigationBarTheme: const BottomNavigationBarThemeData(
               backgroundColor: Colors.amber,

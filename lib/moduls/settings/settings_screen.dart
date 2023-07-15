@@ -1,4 +1,5 @@
 import 'package:chat_app/cubit/HomeCubit/HomeCubit.dart';
+import 'package:chat_app/moduls/EditProfile/editProfileScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -151,7 +152,9 @@ class SettingsScreen extends StatelessWidget {
                   color: Colors.blue,
                 ),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const EditProfileScreen()));
+                  },
                   child: const Text(
                     'Edit Profile',
                     style: TextStyle(color: Colors.white),
