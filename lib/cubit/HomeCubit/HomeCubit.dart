@@ -13,6 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import '../../constant/constant.dart';
+import '../../models/PostModel/PostModel.dart';
 import '../../moduls/settings/settings_screen.dart';
 
 class HomeCubit extends Cubit<HomeStates> {
@@ -77,10 +78,10 @@ class HomeCubit extends Cubit<HomeStates> {
 
     if (pickedFile != null) {
       coverImage = File(pickedFile.path);
-      emit(HomeProfileImagePickedSuccess());
+      emit(HomeCoverImagePickedSuccess());
     } else {
       print('no image selected');
-      emit(HomeProfileImagePickedError());
+      emit(HomeCoverImagePickedError());
     }
   }
 
@@ -195,5 +196,75 @@ class HomeCubit extends Cubit<HomeStates> {
 
   }
 
+  File? postImage;
+
+  Future getPostImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      postImage = File(pickedFile.path);
+      emit(HomePostImagePickedSuccessState());
+    } else {
+      print('no image selected');
+      emit(HomePostImagePickedErrorState());
+    }
+  }
+
+  void removePostImage(){
+    postImage = null;
+    emit(HomeRemovePostImageState());
+  }
+
+
+  void uploadPostImage({
+    required String dateTime,
+    required String text,
+  }) {
+    emit(HomeLoadingCreatePostState());
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('posts/${Uri.file(postImage!.path).pathSegments.last}')
+        .putFile(postImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        print(value.toString());
+        createNewPost(dateTime: dateTime, text: text, postImage: value);
+      }).catchError((error) {
+        print('error------- ${error.toString()}');
+        emit(HomeErrorCreatePostState());
+      });
+    }).catchError((error) {
+      print('error------------ ${error.toString()}');
+      emit(HomeErrorCreatePostState());
+    });
+  }
+
+  void createNewPost({
+    required String dateTime,
+    required String text,
+    String? postImage,
+  }){
+    emit(HomeLoadingCreatePostState());
+
+    PostModel postModel = PostModel(
+      name: model?.name,
+      dataTime: dateTime,
+      text: text,
+      image:model?.image,
+      uId: model?.uId,
+      postImage: postImage??'',
+    );
+
+    FirebaseFirestore.instance
+        .collection('posts')
+        .add(postModel.toMap())
+        .then((value) {
+          emit(HomeSuccessCreatePostState());
+    })
+        .catchError((error) {
+      emit(HomeErrorCreatePostState());
+    });
+
+  }
 
 }
