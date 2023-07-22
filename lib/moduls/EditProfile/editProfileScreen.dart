@@ -43,7 +43,7 @@ class EditProfileScreen extends StatelessWidget {
             actions: [
               TextButton(
                 onPressed: () {
-                  HomeCubit.get(context).updateUserImages(name: nameController.text, phone: phoneController.text, bio: bioController.text);
+                  HomeCubit.get(context).updateUserData(name: nameController.text, phone: phoneController.text, bio: bioController.text);
                 },
                 child: const Text(
                   'UPDATE',
@@ -63,7 +63,7 @@ class EditProfileScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    if(state is HomeUpdateUserData)
+                    if(state is HomeLoadingUpdateUserData)
                       const LinearProgressIndicator(),
                     Container(
                       height: 190.0,
@@ -139,6 +139,33 @@ class EditProfileScreen extends StatelessWidget {
                     const SizedBox(
                       height: 20.0,
                     ),
+                    if(HomeCubit.get(context).profileImage != null || HomeCubit.get(context).coverImage != null)
+                      Row(
+                        children: [
+                          if(HomeCubit.get(context).profileImage != null)
+                            Expanded(child: MaterialButton(
+                              onPressed: (){
+                                HomeCubit.get(context).uploadProfileImage(name: nameController.text, phone: phoneController.text, bio: bioController.text);
+                              },
+                              color: Colors.blue,
+                              child: const Text('update profile'),
+                            )),
+                          const SizedBox(width: 5.0,),
+                          if(HomeCubit.get(context).coverImage != null)
+                            Expanded(
+                                child: MaterialButton(
+                                  onPressed: (){
+                                    HomeCubit.get(context).uploadCoverImage(name: nameController.text, phone: phoneController.text, bio: bioController.text);
+                                  },
+                                  color: Colors.blue,
+                                  child: const Text('update cover'),
+                                )),
+                        ],
+                      ),
+                    if(HomeCubit.get(context).profileImage != null ||HomeCubit.get(context).coverImage != null)
+                      const SizedBox(
+                        height: 20.0,
+                      ),
                     TextFormField(
                       keyboardType: TextInputType.text,
                       onTap: (){},

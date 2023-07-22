@@ -27,4 +27,4 @@ class HomeUploadCoverImageError extends HomeStates{}
 
 class HomeUpdateCoverImageError extends HomeStates{}
 
-class HomeUpdateUserData extends HomeStates{}
+class HomeLoadingUpdateUserData extends HomeStates{}
