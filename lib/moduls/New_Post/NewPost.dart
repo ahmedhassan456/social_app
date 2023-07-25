@@ -1,7 +1,6 @@
 import 'package:chat_app/cubit/HomeCubit/HomeCubit.dart';
 import 'package:chat_app/cubit/HomeCubit/HomeStates.dart';
 import 'package:chat_app/moduls/HomeScreen/HomeScreen.dart';
-import 'package:chat_app/moduls/feeds/feeds_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
