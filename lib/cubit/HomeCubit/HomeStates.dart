@@ -40,3 +40,11 @@ class HomePostImagePickedErrorState extends HomeStates{}
 
 // remove post image
 class HomeRemovePostImageState extends HomeStates{}
+
+// get posts
+class HomeGetPostsSuccessState extends HomeStates{}
+class HomeGetPostsErrorState extends HomeStates{
+  final String? error;
+  HomeGetPostsErrorState(this.error);
+}
+class HomeGetPostsLoadingState extends HomeStates{}

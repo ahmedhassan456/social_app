@@ -248,7 +248,7 @@ class HomeCubit extends Cubit<HomeStates> {
 
     PostModel postModel = PostModel(
       name: model?.name,
-      dataTime: dateTime,
+      dateTime: dateTime,
       text: text,
       image:model?.image,
       uId: model?.uId,
@@ -265,6 +265,25 @@ class HomeCubit extends Cubit<HomeStates> {
       emit(HomeErrorCreatePostState());
     });
 
+  }
+
+
+  List<PostModel> posts = [];
+  void getPosts(){
+    emit(HomeGetPostsLoadingState());
+    FirebaseFirestore
+        .instance
+        .collection('posts')
+        .get()
+        .then((value) {
+          value.docs.forEach((element) {
+            posts.add(PostModel.fromJson(element.data()));
+          });
+          emit(HomeGetPostsSuccessState());
+    }).catchError((error){
+      print('error--------- ${error.toString()}');
+      emit(HomeGetPostsErrorState(error.toString()));
+    });
   }
 
 }
