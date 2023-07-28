@@ -48,3 +48,7 @@ class HomeGetPostsErrorState extends HomeStates{
   HomeGetPostsErrorState(this.error);
 }
 class HomeGetPostsLoadingState extends HomeStates{}
+
+// post likes
+class HomeLikePostSuccessState extends HomeStates{}
+class HomeLikePostErrorState extends HomeStates{}

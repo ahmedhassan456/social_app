@@ -16,7 +16,7 @@ class FeedsScreen extends StatelessWidget {
       listener: (context,state){},
       builder: (context,state){
         return ConditionalBuilder(
-          condition: HomeCubit.get(context).posts.isNotEmpty,
+          condition: HomeCubit.get(context).posts.isNotEmpty && HomeCubit.get(context).model != null,
           fallback:(context) => const Center(child: CircularProgressIndicator()),
           builder: (context) =>  SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -39,7 +39,7 @@ class FeedsScreen extends StatelessWidget {
                 ),
                 ListView.separated(
                   shrinkWrap: true,
-                  itemBuilder: (context , index) => buildPostItem(context,HomeCubit.get(context).posts[index]),
+                  itemBuilder: (context , index) => buildPostItem(context,HomeCubit.get(context).posts[index], index),
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount:HomeCubit.get(context).posts.length,
                   separatorBuilder: (context,index) => const SizedBox(height: 10.0,),
@@ -52,7 +52,7 @@ class FeedsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildPostItem(context, PostModel model) => Card(
+  Widget buildPostItem(context, PostModel model, index) => Card(
     clipBehavior: Clip.antiAliasWithSaveLayer,
     margin: const EdgeInsets.symmetric(horizontal: 8.0),
     elevation: 10.0,
@@ -106,15 +106,16 @@ class FeedsScreen extends StatelessWidget {
               color: Colors.grey[300],
             ),
           ),
-          if(model.text != null)
-            Text(
+          Text(
             '${model.text}',
+            maxLines: 4,
             style: const TextStyle(
               height: 1.3,
               fontWeight: FontWeight.bold,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
-          if(HomeCubit.get(context).postImage != null)
+          if(model.postImage != null)
             Container(
             height: 140.0,
             decoration: BoxDecoration(
@@ -135,8 +136,8 @@ class FeedsScreen extends StatelessWidget {
                     child: const Icon(Icons.heart_broken_outlined, size: 15.0,),
                     onTap: (){},
                   ),
-                  const Text(
-                    '0 Like',
+                  Text(
+                    '${HomeCubit.get(context).likes[index]} Like',
                   ),
                   const Spacer(),
                   InkWell(
@@ -166,18 +167,30 @@ class FeedsScreen extends StatelessWidget {
                   ),
                   const Spacer(),
                   InkWell(
-                    child: const Icon(Icons.heart_broken_outlined, size: 15.0,),
-                    onTap: (){},
-                  ),
-                  const Text(
-                    'like',
+                    child: const Row(
+                      children: [
+                        Icon(Icons.heart_broken_rounded, size: 15.0,),
+                        SizedBox(width: 2.0,),
+                        Text(
+                          'like',
+                        ),
+                      ],
+                    ),
+                    onTap: (){
+                      HomeCubit.get(context).likePost(HomeCubit.get(context).postsId[index]);
+                    },
                   ),
                   const SizedBox(width: 15.0,),
                   InkWell(
-                    child: const Icon(Icons.comment_outlined, size: 15.0),
+                    child: const Row(
+                      children: [
+                        Icon(Icons.comment_outlined, size: 15.0),
+                        SizedBox(width: 2.0,),
+                        Text('comment',),
+                      ],
+                    ),
                     onTap: (){},
                   ),
-                  const Text('comment',),
                 ],
               ),
             ],
