@@ -269,6 +269,8 @@ class HomeCubit extends Cubit<HomeStates> {
 
 
   List<PostModel> posts = [];
+  List<String> postsId = [];
+  List<int> likes = [];
   void getPosts(){
     emit(HomeGetPostsLoadingState());
     FirebaseFirestore
@@ -277,13 +279,39 @@ class HomeCubit extends Cubit<HomeStates> {
         .get()
         .then((value) {
           value.docs.forEach((element) {
-            posts.add(PostModel.fromJson(element.data()));
+            element.reference
+                .collection('likes')
+                .get()
+                .then((value) {
+                  likes.add(value.docs.length);
+                  postsId.add(element.id);
+                  posts.add(PostModel.fromJson(element.data()));
+            })
+                .catchError((error){});
           });
           emit(HomeGetPostsSuccessState());
     }).catchError((error){
       print('error--------- ${error.toString()}');
       emit(HomeGetPostsErrorState(error.toString()));
     });
+  }
+
+
+  void likePost(String postId){
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postId)
+        .collection('likes')
+        .doc(model?.uId)
+        .set({
+      'like':true,
+    }).then((value) {
+      emit(HomeLikePostSuccessState());
+    })
+        .catchError((error){
+          emit(HomeLikePostErrorState());
+    });
+
   }
 
 }
