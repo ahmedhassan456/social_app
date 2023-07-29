@@ -52,3 +52,12 @@ class HomeGetPostsLoadingState extends HomeStates{}
 // post likes
 class HomeLikePostSuccessState extends HomeStates{}
 class HomeLikePostErrorState extends HomeStates{}
+
+// post comment
+class HomeCommentPostSuccessState extends HomeStates{}
+class HomeCommentPostErrorState extends HomeStates{}
+
+// get All Users
+class HomeGetAllUsersLoadingState extends HomeStates{}
+class HomeGetAllUsersSuccessState extends HomeStates{}
+class HomeGetAllUsersErrorState extends HomeStates{}

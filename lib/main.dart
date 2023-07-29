@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => HomeCubit()..getUserData()..getPosts()),
+          BlocProvider(create: (context) => HomeCubit()..getUserData()..getPosts()..getUsers()),
         ],
         child: MaterialApp(
           title: 'Chat APP',
@@ -88,16 +88,6 @@ class MyApp extends StatelessWidget {
                 fontSize: 20.0,
               ),
             ),
-            bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-              backgroundColor: Colors.amber,
-              elevation: 0.0,
-              selectedIconTheme: IconThemeData(
-                color: Colors.black,
-              ),
-              selectedLabelStyle: TextStyle(
-                color: Colors.black,
-              ),
-            )
           ),
         ),
       );

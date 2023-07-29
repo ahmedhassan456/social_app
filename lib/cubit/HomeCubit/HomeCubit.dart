@@ -3,8 +3,6 @@ import 'package:bloc/bloc.dart';
 import 'package:chat_app/cubit/HomeCubit/HomeStates.dart';
 import 'package:chat_app/models/userModel/userModel.dart';
 import 'package:chat_app/moduls/New_Post/NewPost.dart';
-import 'package:chat_app/moduls/chats/chats_screen.dart';
-import 'package:chat_app/moduls/feeds/feeds_screen.dart';
 import 'package:chat_app/moduls/users/user_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,6 +12,8 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import '../../constant/constant.dart';
 import '../../models/PostModel/PostModel.dart';
+import '../../moduls/chatsScreen/chats_screen.dart';
+import '../../moduls/feedsScreen/feeds_screen.dart';
 import '../../moduls/settings/settings_screen.dart';
 
 class HomeCubit extends Cubit<HomeStates> {
@@ -271,6 +271,7 @@ class HomeCubit extends Cubit<HomeStates> {
   List<PostModel> posts = [];
   List<String> postsId = [];
   List<int> likes = [];
+  List<int> comments = [];
   void getPosts(){
     emit(HomeGetPostsLoadingState());
     FirebaseFirestore
@@ -312,6 +313,41 @@ class HomeCubit extends Cubit<HomeStates> {
           emit(HomeLikePostErrorState());
     });
 
+  }
+
+  // void commentPost(String postId, String comment){
+  //   FirebaseFirestore.instance
+  //   .collection('posts')
+  //   .doc(postId)
+  //   .collection('comments')
+  //   .doc(model?.uId)
+  //   .set({
+  //     'comment': comment??'',
+  //   }).then((value) {
+  //     emit(HomeCommentPostSuccessState());
+  //   })
+  //   .catchError((error){
+  //     emit(HomeCommentPostErrorState());
+  //   });
+  // }
+
+  List<UserModel> users = [];
+
+  void getUsers(){
+    emit(HomeGetAllUsersLoadingState());
+    FirebaseFirestore.instance
+        .collection('users')
+        .get()
+        .then((value) {
+          value.docs.forEach((element) {
+            users.add(UserModel.fromJson(element.data()));
+
+          });
+          emit(HomeGetAllUsersSuccessState());
+    })
+        .catchError((error){
+          emit(HomeGetAllUsersErrorState());
+    });
   }
 
 }
