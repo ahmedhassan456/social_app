@@ -45,6 +45,8 @@ class HomeScreen extends StatelessWidget {
             cubit.changeNavBar(index: index);
           },
           currentIndex: cubit.currentIndex,
+          backgroundColor: Colors.white,
+          type: BottomNavigationBarType.fixed,
         ),
       ),
     );

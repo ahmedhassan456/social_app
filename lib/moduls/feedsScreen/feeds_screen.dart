@@ -16,7 +16,7 @@ class FeedsScreen extends StatelessWidget {
       listener: (context,state){},
       builder: (context,state){
         return ConditionalBuilder(
-          condition: HomeCubit.get(context).posts.isNotEmpty && HomeCubit.get(context).model != null,
+          condition: HomeCubit.get(context).posts.isNotEmpty,
           fallback:(context) => const Center(child: CircularProgressIndicator()),
           builder: (context) =>  SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -115,7 +115,7 @@ class FeedsScreen extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          if(model.postImage != null)
+          if(model.postImage != '')
             Container(
             height: 140.0,
             decoration: BoxDecoration(
@@ -133,11 +133,19 @@ class FeedsScreen extends StatelessWidget {
               Row(
                 children: [
                   InkWell(
-                    child: const Icon(Icons.heart_broken_outlined, size: 15.0,),
+                    child: Row(
+                      children: [
+                        Icon(Icons.heart_broken_rounded, size: 15.0,color: Colors.yellow.shade700,),
+                        const SizedBox(width: 2.0,),
+                        Text(
+                          '${HomeCubit.get(context).likes[index]} Like',
+                          style: TextStyle(
+                            color: Colors.yellow.shade700,
+                          ),
+                        ),
+                      ],
+                    ),
                     onTap: (){},
-                  ),
-                  Text(
-                    '${HomeCubit.get(context).likes[index]} Like',
                   ),
                   const Spacer(),
                   InkWell(
@@ -169,10 +177,13 @@ class FeedsScreen extends StatelessWidget {
                   InkWell(
                     child: const Row(
                       children: [
-                        Icon(Icons.heart_broken_rounded, size: 15.0,),
+                        Icon(Icons.heart_broken_rounded, size: 15.0,color: Colors.red,),
                         SizedBox(width: 2.0,),
                         Text(
                           'like',
+                          style: TextStyle(
+                            color: Colors.red,
+                          ),
                         ),
                       ],
                     ),
@@ -184,9 +195,11 @@ class FeedsScreen extends StatelessWidget {
                   InkWell(
                     child: const Row(
                       children: [
-                        Icon(Icons.comment_outlined, size: 15.0),
+                        Icon(Icons.comment_outlined, size: 15.0,color: Colors.red,),
                         SizedBox(width: 2.0,),
-                        Text('comment',),
+                        Text('comment',style: TextStyle(
+                          color: Colors.red,
+                        ),),
                       ],
                     ),
                     onTap: (){},
