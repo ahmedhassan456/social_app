@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:chat_app/cubit/HomeCubit/HomeStates.dart';
+import 'package:chat_app/models/MessageModel/MessageModel.dart';
 import 'package:chat_app/models/userModel/userModel.dart';
 import 'package:chat_app/moduls/New_Post/NewPost.dart';
 import 'package:chat_app/moduls/users/user_screen.dart';
@@ -322,5 +323,51 @@ class HomeCubit extends Cubit<HomeStates> {
       });
     }
 
+  }
+
+  // send
+  void sendMessage({
+    required String receiverId,
+    required String dateTime,
+    required String text,
+}){
+    MessageModel messageModel = MessageModel(
+      senderId: model?.uId,
+      receiverId: receiverId,
+      text: text,
+      dateTime: dateTime,
+    );
+
+    // set my chats
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(model?.uId)
+        .collection('chats')
+        .doc(receiverId)
+        .collection('messages')
+        .add(messageModel.toMap())
+        .then((value) {
+          emit(HomeSendMessagesSuccessState());
+    })
+        .catchError((error){
+          print('error-------- ${error.toString()}');
+          emit(HomeSendMessagesErrorState());
+    });
+
+    // set receiver chats
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(receiverId)
+        .collection('chats')
+        .doc(model?.uId)
+        .collection('messages')
+        .add(messageModel.toMap())
+        .then((value) {
+      emit(HomeSendMessagesSuccessState());
+    })
+        .catchError((error){
+      print('error-------- ${error.toString()}');
+      emit(HomeSendMessagesErrorState());
+    });
   }
 }
