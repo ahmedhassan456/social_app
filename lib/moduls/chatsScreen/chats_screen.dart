@@ -1,6 +1,7 @@
 import 'package:chat_app/cubit/HomeCubit/HomeCubit.dart';
 import 'package:chat_app/cubit/HomeCubit/HomeStates.dart';
 import 'package:chat_app/models/userModel/userModel.dart';
+import 'package:chat_app/moduls/chatsScreen/ChatDetails/ChatDetailsScreen.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +18,7 @@ class ChatsScreen extends StatelessWidget {
           condition: HomeCubit.get(context).users.isNotEmpty,
           builder: (context) => ListView.separated(
             physics: const BouncingScrollPhysics(),
-            itemBuilder: (context, index) => buildUserItem(HomeCubit.get(context).users[index]),
+            itemBuilder: (context, index) => buildUserItem(HomeCubit.get(context).users[index],context),
             separatorBuilder: (context, index) => Divider(
               color: Colors.grey[300],
               height: 1.0,
@@ -30,8 +31,10 @@ class ChatsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildUserItem(UserModel model) => InkWell(
-    onTap: (){},
+  Widget buildUserItem(UserModel model,context) => InkWell(
+    onTap: (){
+      Navigator.push(context, MaterialPageRoute(builder: (context) => ChatDetailsScreen(model: model)));
+    },
     child: Padding(
       padding: const EdgeInsets.all(20.0),
       child: Row(
