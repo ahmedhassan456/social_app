@@ -48,6 +48,9 @@ class HomeCubit extends Cubit<HomeStates> {
   void changeNavBar({
     required int index,
   }) {
+    if (index == 1) {
+      getUsers();
+    }
     if (index == 2) {
       emit(HomeNewPost());
     } else {
@@ -91,7 +94,7 @@ class HomeCubit extends Cubit<HomeStates> {
     required String name,
     required String phone,
     required String bio,
-}) {
+  }) {
     firebase_storage.FirebaseStorage.instance
         .ref()
         .child('users/${Uri.file(profileImage!.path).pathSegments.last}')
@@ -118,7 +121,7 @@ class HomeCubit extends Cubit<HomeStates> {
     required String name,
     required String phone,
     required String bio,
-}) {
+  }) {
     firebase_storage.FirebaseStorage.instance
         .ref()
         .child('users/${Uri.file(coverImage!.path).pathSegments.last}')
@@ -169,31 +172,29 @@ class HomeCubit extends Cubit<HomeStates> {
     required String bio,
     String? image,
     String? coverImage,
-}){
+  }) {
     emit(HomeLoadingUpdateUserData());
 
     UserModel userModel = UserModel(
       name: name,
       phone: phone,
       bio: bio,
-      image: image?? model?.image,
+      image: image ?? model?.image,
       isEmailVerified: false,
       email: model?.email,
       uId: model?.uId,
-      coverImage: coverImage?? model?.coverImage,
+      coverImage: coverImage ?? model?.coverImage,
     );
 
     FirebaseFirestore.instance
-      .collection('users')
-      .doc(model?.uId)
-      .update(userModel.toMap())
-      .then((value) {
-        getUserData();
-      })
-      .catchError((error) {
-        emit(HomeUpdateCoverImageError());
-      });
-
+        .collection('users')
+        .doc(model?.uId)
+        .update(userModel.toMap())
+        .then((value) {
+      getUserData();
+    }).catchError((error) {
+      emit(HomeUpdateCoverImageError());
+    });
   }
 
   File? postImage;
@@ -210,11 +211,10 @@ class HomeCubit extends Cubit<HomeStates> {
     }
   }
 
-  void removePostImage(){
+  void removePostImage() {
     postImage = null;
     emit(HomeRemovePostImageState());
   }
-
 
   void uploadPostImage({
     required String dateTime,
@@ -243,111 +243,84 @@ class HomeCubit extends Cubit<HomeStates> {
     required String dateTime,
     required String text,
     String? postImage,
-  }){
+  }) {
     emit(HomeLoadingCreatePostState());
 
     PostModel postModel = PostModel(
       name: model?.name,
       dateTime: dateTime,
       text: text,
-      image:model?.image,
+      image: model?.image,
       uId: model?.uId,
-      postImage: postImage??'',
+      postImage: postImage ?? '',
     );
 
     FirebaseFirestore.instance
         .collection('posts')
         .add(postModel.toMap())
         .then((value) {
-          emit(HomeSuccessCreatePostState());
-    })
-        .catchError((error) {
+      emit(HomeSuccessCreatePostState());
+    }).catchError((error) {
       emit(HomeErrorCreatePostState());
     });
-
   }
-
 
   List<PostModel> posts = [];
   List<String> postsId = [];
   List<int> likes = [];
   List<int> comments = [];
-  void getPosts(){
+
+  void getPosts() {
     emit(HomeGetPostsLoadingState());
-    FirebaseFirestore
-        .instance
-        .collection('posts')
-        .get()
-        .then((value) {
-          value.docs.forEach((element) {
-            element.reference
-                .collection('likes')
-                .get()
-                .then((value) {
-                  likes.add(value.docs.length);
-                  postsId.add(element.id);
-                  posts.add(PostModel.fromJson(element.data()));
-            })
-                .catchError((error){});
-          });
-          emit(HomeGetPostsSuccessState());
-    }).catchError((error){
+    FirebaseFirestore.instance.collection('posts').get().then((value) {
+      value.docs.forEach((element) {
+        element.reference.collection('likes').get().then((value) {
+          likes.add(value.docs.length);
+          postsId.add(element.id);
+          posts.add(PostModel.fromJson(element.data()));
+        }).catchError((error) {});
+      });
+      emit(HomeGetPostsSuccessState());
+    }).catchError((error) {
       print('error--------- ${error.toString()}');
       emit(HomeGetPostsErrorState(error.toString()));
     });
   }
 
-
-  void likePost(String postId){
+  void likePost(String postId) {
     FirebaseFirestore.instance
         .collection('posts')
         .doc(postId)
         .collection('likes')
         .doc(model?.uId)
         .set({
-      'like':true,
+      'like': true,
     }).then((value) {
       emit(HomeLikePostSuccessState());
-    })
-        .catchError((error){
-          emit(HomeLikePostErrorState());
+    }).catchError((error) {
+      emit(HomeLikePostErrorState());
     });
-
   }
-
-  // void commentPost(String postId, String comment){
-  //   FirebaseFirestore.instance
-  //   .collection('posts')
-  //   .doc(postId)
-  //   .collection('comments')
-  //   .doc(model?.uId)
-  //   .set({
-  //     'comment': comment??'',
-  //   }).then((value) {
-  //     emit(HomeCommentPostSuccessState());
-  //   })
-  //   .catchError((error){
-  //     emit(HomeCommentPostErrorState());
-  //   });
-  // }
 
   List<UserModel> users = [];
 
-  void getUsers(){
-    emit(HomeGetAllUsersLoadingState());
-    FirebaseFirestore.instance
-        .collection('users')
-        .get()
-        .then((value) {
-          value.docs.forEach((element) {
+  void getUsers() {
+
+    if(users.isEmpty){
+      emit(HomeGetAllUsersLoadingState());
+      FirebaseFirestore.instance.collection('users').get().then((value) {
+        value.docs.forEach((element) {
+
+          if (element.data()['uId'] != model?.uId) {
             users.add(UserModel.fromJson(element.data()));
+          }
+        });
+        emit(HomeGetAllUsersSuccessState());
+      }).catchError((error) {
+        print('Error---------- ${error.toString()}');
+        emit(HomeGetAllUsersErrorState());
+      });
+    }
 
-          });
-          emit(HomeGetAllUsersSuccessState());
-    })
-        .catchError((error){
-          emit(HomeGetAllUsersErrorState());
-    });
   }
-
 }
