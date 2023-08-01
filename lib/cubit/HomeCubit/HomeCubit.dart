@@ -325,7 +325,7 @@ class HomeCubit extends Cubit<HomeStates> {
 
   }
 
-  // send
+
   void sendMessage({
     required String receiverId,
     required String dateTime,
