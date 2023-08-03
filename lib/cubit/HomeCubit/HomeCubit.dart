@@ -392,4 +392,23 @@ class HomeCubit extends Cubit<HomeStates> {
           });
     });
 }
+
+  List<UserModel> usersI = [];
+
+  void getUsersI() {
+
+    if(usersI.isEmpty){
+      emit(HomeGetAllUsersILoadingState());
+      FirebaseFirestore.instance.collection('users').get().then((value) {
+        value.docs.forEach((element) {
+          usersI.add(UserModel.fromJson(element.data()));
+        });
+        emit(HomeGetAllUsersISuccessState());
+      }).catchError((error) {
+        print('Error---------- ${error.toString()}');
+        emit(HomeGetAllUsersIErrorState());
+      });
+    }
+
+  }
 }

@@ -18,7 +18,8 @@ void main() async{
   await Firebase.initializeApp();
   await CacheHelper.init();
   bool checkUid = false;
-  uId = CacheHelper.getData(key:'uId');
+  String? getUId = CacheHelper.getData(key:'uId');
+  uId = getUId;
   print(uId);
   if(uId != null){
     checkUid = true;
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => HomeCubit()..getUserData()..getPosts()),
+          BlocProvider(create: (context) => HomeCubit()..getUserData()..getPosts()..getUsersI()),
         ],
         child: MaterialApp(
           title: 'Chat APP',

@@ -66,3 +66,8 @@ class HomeGetAllUsersErrorState extends HomeStates{}
 class HomeSendMessagesSuccessState extends HomeStates{}
 class HomeSendMessagesErrorState extends HomeStates{}
 class HomeGetMessagesSuccessState extends HomeStates{}
+
+//get usersI
+class HomeGetAllUsersILoadingState extends HomeStates{}
+class HomeGetAllUsersISuccessState extends HomeStates{}
+class HomeGetAllUsersIErrorState extends HomeStates{}
