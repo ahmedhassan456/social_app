@@ -34,7 +34,7 @@ class LoginScreen extends StatelessWidget {
             );
           }
           if (state is LoginSuccessState) {
-            CacheHelper.saveData(key: 'uId', value: 'mhm8HLmb4VRludjCqkzidVd0XsV2')
+            CacheHelper.saveData(key: 'uId', value: LoginCubit.get(context).uId.toString())
                 .then((value) {
                   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
             });
