@@ -37,7 +37,6 @@ class EditProfileScreen extends StatelessWidget {
               },
               icon: const Icon(
                 Icons.arrow_back,
-                color: Colors.black,
               ),
             ),
             actions: [
@@ -54,7 +53,12 @@ class EditProfileScreen extends StatelessWidget {
                 ),
               )
             ],
-            title: const Text('Edit Profile'),
+            title: const Text(
+                'Edit Profile',
+              style: TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
           ),
           body: Padding(
             padding: const EdgeInsets.all(8.0),

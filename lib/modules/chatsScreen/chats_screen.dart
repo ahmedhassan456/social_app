@@ -1,7 +1,7 @@
 import 'package:chat_app/cubit/HomeCubit/HomeCubit.dart';
 import 'package:chat_app/cubit/HomeCubit/HomeStates.dart';
 import 'package:chat_app/models/userModel/userModel.dart';
-import 'package:chat_app/moduls/chatsScreen/ChatDetails/ChatDetailsScreen.dart';
+import 'package:chat_app/modules/chatsScreen/ChatDetails/ChatDetailsScreen.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

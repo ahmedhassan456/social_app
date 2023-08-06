@@ -1,5 +1,5 @@
 import 'package:chat_app/cubit/HomeCubit/HomeCubit.dart';
-import 'package:chat_app/moduls/EditProfile/editProfileScreen.dart';
+import 'package:chat_app/modules/EditProfile/editProfileScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

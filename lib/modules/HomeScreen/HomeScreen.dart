@@ -1,6 +1,7 @@
+import 'package:chat_app/CacheHelper/CacheHelper.dart';
 import 'package:chat_app/cubit/HomeCubit/HomeCubit.dart';
 import 'package:chat_app/cubit/HomeCubit/HomeStates.dart';
-import 'package:chat_app/moduls/New_Post/NewPost.dart';
+import 'package:chat_app/modules/New_Post/NewPost.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,12 +24,13 @@ class HomeScreen extends StatelessWidget {
             cubit.titles[cubit.currentIndex],
             style: const TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.black,
-              fontSize: 25.0,
+              fontSize: 24.0,
             ),
           ),
           actions: [
-            IconButton(onPressed: (){}, icon: const Icon(Icons.notifications_active_outlined)),
+            IconButton(onPressed: (){
+              HomeCubit.get(context).changeMood();
+            }, icon: const Icon(Icons.sunny)),
             IconButton(onPressed: (){}, icon: const Icon(Icons.search)),
           ],
         ),
@@ -45,7 +47,6 @@ class HomeScreen extends StatelessWidget {
             cubit.changeNavBar(index: index);
           },
           currentIndex: cubit.currentIndex,
-          backgroundColor: Colors.white,
           type: BottomNavigationBarType.fixed,
         ),
       ),
