@@ -3,19 +3,20 @@ import 'package:bloc/bloc.dart';
 import 'package:chat_app/cubit/HomeCubit/HomeStates.dart';
 import 'package:chat_app/models/MessageModel/MessageModel.dart';
 import 'package:chat_app/models/userModel/userModel.dart';
-import 'package:chat_app/moduls/New_Post/NewPost.dart';
-import 'package:chat_app/moduls/users/user_screen.dart';
+import 'package:chat_app/modules/New_Post/NewPost.dart';
+import 'package:chat_app/modules/users/user_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import '../../constant/constant.dart';
 import '../../models/PostModel/PostModel.dart';
-import '../../moduls/chatsScreen/chats_screen.dart';
-import '../../moduls/feedsScreen/feeds_screen.dart';
-import '../../moduls/settings/settings_screen.dart';
+import '../../modules/chatsScreen/chats_screen.dart';
+import '../../modules/feedsScreen/feeds_screen.dart';
+import '../../modules/settings/settings_screen.dart';
 
 class HomeCubit extends Cubit<HomeStates> {
   HomeCubit() : super(HomeInitialState());
@@ -410,5 +411,17 @@ class HomeCubit extends Cubit<HomeStates> {
       });
     }
 
+  }
+  bool isDark = false;
+  ThemeMode theme = ThemeMode.light;
+  void changeMood(){
+    isDark = !isDark;
+    if(isDark){
+      theme = ThemeMode.dark;
+      emit(HomeChangeAppMoodState());
+    }else{
+      theme = ThemeMode.light;
+      emit(HomeChangeAppMoodState());
+    }
   }
 }

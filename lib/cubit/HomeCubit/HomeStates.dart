@@ -71,3 +71,6 @@ class HomeGetMessagesSuccessState extends HomeStates{}
 class HomeGetAllUsersILoadingState extends HomeStates{}
 class HomeGetAllUsersISuccessState extends HomeStates{}
 class HomeGetAllUsersIErrorState extends HomeStates{}
+
+// change app mood
+class HomeChangeAppMoodState extends HomeStates{}

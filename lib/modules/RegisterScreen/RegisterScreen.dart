@@ -1,10 +1,9 @@
 import 'package:chat_app/cubit/LoginCubit/LoginCubit.dart';
 import 'package:chat_app/layout/Login/LoginScreen.dart';
-import 'package:chat_app/moduls/HomeScreen/HomeScreen.dart';
+import 'package:chat_app/modules/HomeScreen/HomeScreen.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../cubit/RegisterCubit/RegisterCubit.dart';
 import '../../cubit/RegisterCubit/RegisterStates.dart';

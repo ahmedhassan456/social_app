@@ -1,8 +1,8 @@
 import 'package:chat_app/CacheHelper/CacheHelper.dart';
 import 'package:chat_app/cubit/LoginCubit/LoginCubit.dart';
 import 'package:chat_app/cubit/LoginCubit/LoginStates.dart';
-import 'package:chat_app/moduls/HomeScreen/HomeScreen.dart';
-import 'package:chat_app/moduls/RegisterScreen/RegisterScreen.dart';
+import 'package:chat_app/modules/HomeScreen/HomeScreen.dart';
+import 'package:chat_app/modules/RegisterScreen/RegisterScreen.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

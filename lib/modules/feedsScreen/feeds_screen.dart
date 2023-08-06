@@ -90,7 +90,7 @@ class FeedsScreen extends StatelessWidget {
                     ),
                     Text(
                       '${model.dateTime}',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(height: 1.4),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(height: 1.4,color: Colors.blue),
                     ),
                   ],
                 ),
@@ -115,6 +115,7 @@ class FeedsScreen extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
+          const SizedBox(height: 5.0,),
           if(model.postImage != '')
             Container(
             height: 140.0,

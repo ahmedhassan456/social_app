@@ -45,7 +45,6 @@ class ChatDetailsScreen extends StatelessWidget {
                 leading: IconButton(
                   icon: const Icon(
                     Icons.arrow_back,
-                    color: Colors.black,
                     size: 25.0,
                   ),
                   onPressed: (){
@@ -87,6 +86,9 @@ class ChatDetailsScreen extends StatelessWidget {
                                   decoration: const InputDecoration(
                                     border: InputBorder.none,
                                     hintText: 'type your message here...',
+                                    hintStyle: TextStyle(
+                                      color: Colors.black,
+                                    ),
                                   ),
                                   controller: messageController,
                                   keyboardType: TextInputType.multiline,

@@ -1,6 +1,6 @@
 import 'package:chat_app/cubit/HomeCubit/HomeCubit.dart';
 import 'package:chat_app/cubit/HomeCubit/HomeStates.dart';
-import 'package:chat_app/moduls/HomeScreen/HomeScreen.dart';
+import 'package:chat_app/modules/HomeScreen/HomeScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +20,6 @@ class NewPostScreen extends StatelessWidget {
             leading: IconButton(
               icon: const Icon(
                 Icons.arrow_back,
-                color: Colors.black,
               ),
               onPressed: (){
                 Navigator.pop(context);
@@ -30,7 +29,7 @@ class NewPostScreen extends StatelessWidget {
               'Create Post',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                fontSize: 20.0,
               ),
             ),
             actions: [
