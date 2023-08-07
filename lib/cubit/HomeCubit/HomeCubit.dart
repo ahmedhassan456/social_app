@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:chat_app/cubit/HomeCubit/HomeStates.dart';
 import 'package:chat_app/models/MessageModel/MessageModel.dart';
+import 'package:chat_app/models/commentModel/CommentModel.dart';
 import 'package:chat_app/models/userModel/userModel.dart';
 import 'package:chat_app/modules/New_Post/NewPost.dart';
 import 'package:chat_app/modules/users/user_screen.dart';
@@ -99,7 +100,10 @@ class HomeCubit extends Cubit<HomeStates> {
   }) {
     firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('users/${Uri.file(profileImage!.path).pathSegments.last}')
+        .child('users/${Uri
+        .file(profileImage!.path)
+        .pathSegments
+        .last}')
         .putFile(profileImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
@@ -126,7 +130,10 @@ class HomeCubit extends Cubit<HomeStates> {
   }) {
     firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('users/${Uri.file(coverImage!.path).pathSegments.last}')
+        .child('users/${Uri
+        .file(coverImage!.path)
+        .pathSegments
+        .last}')
         .putFile(coverImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
@@ -225,7 +232,10 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(HomeLoadingCreatePostState());
     firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('posts/${Uri.file(postImage!.path).pathSegments.last}')
+        .child('posts/${Uri
+        .file(postImage!.path)
+        .pathSegments
+        .last}')
         .putFile(postImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
@@ -274,12 +284,19 @@ class HomeCubit extends Cubit<HomeStates> {
 
   void getPosts() {
     emit(HomeGetPostsLoadingState());
-    FirebaseFirestore.instance.collection('posts').get().then((value) {
+    FirebaseFirestore.instance.collection('posts').orderBy('dateTime')
+        .get()
+        .then((value) {
+      posts = [];
       value.docs.forEach((element) {
         element.reference.collection('likes').get().then((value) {
           likes.add(value.docs.length);
           postsId.add(element.id);
           posts.add(PostModel.fromJson(element.data()));
+        }).catchError((error) {});
+
+        element.reference.collection('comments').get().then((value) {
+          comments.add(value.docs.length);
         }).catchError((error) {});
       });
       emit(HomeGetPostsSuccessState());
@@ -307,12 +324,10 @@ class HomeCubit extends Cubit<HomeStates> {
   List<UserModel> users = [];
 
   void getUsers() {
-
-    if(users.isEmpty){
+    if (users.isEmpty) {
       emit(HomeGetAllUsersLoadingState());
       FirebaseFirestore.instance.collection('users').get().then((value) {
         value.docs.forEach((element) {
-
           if (element.data()['uId'] != model?.uId) {
             users.add(UserModel.fromJson(element.data()));
           }
@@ -323,7 +338,6 @@ class HomeCubit extends Cubit<HomeStates> {
         emit(HomeGetAllUsersErrorState());
       });
     }
-
   }
 
   // send
@@ -331,7 +345,7 @@ class HomeCubit extends Cubit<HomeStates> {
     required String receiverId,
     required String dateTime,
     required String text,
-}){
+  }) {
     MessageModel messageModel = MessageModel(
       senderId: model?.uId,
       receiverId: receiverId,
@@ -348,11 +362,11 @@ class HomeCubit extends Cubit<HomeStates> {
         .collection('messages')
         .add(messageModel.toMap())
         .then((value) {
-          emit(HomeSendMessagesSuccessState());
+      emit(HomeSendMessagesSuccessState());
     })
-        .catchError((error){
-          print('error-------- ${error.toString()}');
-          emit(HomeSendMessagesErrorState());
+        .catchError((error) {
+      print('error-------- ${error.toString()}');
+      emit(HomeSendMessagesErrorState());
     });
 
     // set receiver chats
@@ -366,17 +380,17 @@ class HomeCubit extends Cubit<HomeStates> {
         .then((value) {
       emit(HomeSendMessagesSuccessState());
     })
-        .catchError((error){
+        .catchError((error) {
       print('error-------- ${error.toString()}');
       emit(HomeSendMessagesErrorState());
     });
   }
-  
+
   List<MessageModel> messages = [];
-  
+
   void getMessages({
     required String receiverId,
-}){
+  }) {
     FirebaseFirestore.instance
         .collection('users')
         .doc(model?.uId)
@@ -386,19 +400,18 @@ class HomeCubit extends Cubit<HomeStates> {
         .orderBy('dateTime')
         .snapshots()
         .listen((event) {
-          messages = [];
-          event.docs.forEach((element) {
-            messages.add(MessageModel.fromJson(element.data()));
-            emit(HomeGetMessagesSuccessState());
-          });
+      messages = [];
+      event.docs.forEach((element) {
+        messages.add(MessageModel.fromJson(element.data()));
+        emit(HomeGetMessagesSuccessState());
+      });
     });
-}
+  }
 
   List<UserModel> usersI = [];
 
   void getUsersI() {
-
-    if(usersI.isEmpty){
+    if (usersI.isEmpty) {
       emit(HomeGetAllUsersILoadingState());
       FirebaseFirestore.instance.collection('users').get().then((value) {
         value.docs.forEach((element) {
@@ -410,18 +423,71 @@ class HomeCubit extends Cubit<HomeStates> {
         emit(HomeGetAllUsersIErrorState());
       });
     }
-
   }
+
   bool isDark = false;
   ThemeMode theme = ThemeMode.light;
-  void changeMood(){
+
+  void changeMood() {
     isDark = !isDark;
-    if(isDark){
+    if (isDark) {
       theme = ThemeMode.dark;
       emit(HomeChangeAppMoodState());
-    }else{
+    } else {
       theme = ThemeMode.light;
       emit(HomeChangeAppMoodState());
     }
   }
+
+  Future<HomeCubit> reFresh() async {
+    emit(HomeRefreshPostsState());
+    return HomeCubit()..getPosts()..getCommentsData();
+  }
+
+  void setCommentData({
+    required String postId,
+    required String dateTime,
+    required String text,
+  }) {
+    CommentModel commentModel = CommentModel(
+      name: model?.name,
+      image: model?.image,
+      uId: model?.uId,
+      dateTime: dateTime,
+      text: text,
+    );
+
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postId)
+        .collection('comments')
+        .doc(model?.uId)
+        .set(commentModel.toMap()).then((value) {
+      emit(HomeSetCommentPostSuccessState());
+    }).catchError((error) {
+      emit(HomeSetCommentPostErrorState());
+    });
+  }
+
+
+  List<CommentModel> commentsData = [];
+  void getCommentsData() {
+    FirebaseFirestore.instance
+        .collection('posts').get().then((value) {
+      value.docs.forEach((element) {
+        commentsData = [];
+        element.reference.collection('comments').orderBy('dateTime').get()
+            .then((value) {
+          value.docs.forEach((element) {
+            commentsData.add(CommentModel.fromJson(element.data()));
+          });
+          emit(HomeGetCommentPostSuccessState());
+        });
+      });
+    }).catchError((error) {
+      emit(HomeGetCommentPostErrorState());
+    });
+  }
+
+
 }

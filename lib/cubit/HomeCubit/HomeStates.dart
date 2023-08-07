@@ -54,8 +54,12 @@ class HomeLikePostSuccessState extends HomeStates{}
 class HomeLikePostErrorState extends HomeStates{}
 
 // post comment
-class HomeCommentPostSuccessState extends HomeStates{}
-class HomeCommentPostErrorState extends HomeStates{}
+class HomeSetCommentPostSuccessState extends HomeStates{}
+class HomeSetCommentPostErrorState extends HomeStates{}
+
+//get comments
+class HomeGetCommentPostSuccessState extends HomeStates{}
+class HomeGetCommentPostErrorState extends HomeStates{}
 
 // get All Users
 class HomeGetAllUsersLoadingState extends HomeStates{}
@@ -74,3 +78,9 @@ class HomeGetAllUsersIErrorState extends HomeStates{}
 
 // change app mood
 class HomeChangeAppMoodState extends HomeStates{}
+
+// refresh
+class HomeRefreshPostsState extends HomeStates{}
+
+// change index
+class HomeChangeIndexState extends HomeStates{}
