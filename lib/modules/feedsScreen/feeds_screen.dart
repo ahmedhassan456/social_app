@@ -5,6 +5,7 @@ import 'package:chat_app/styles/my_flutter_app_icons.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:like_button/like_button.dart';
 
 import '../../cubit/HomeCubit/HomeStates.dart';
 
@@ -158,13 +159,8 @@ class FeedsScreen extends StatelessWidget {
                       InkWell(
                         child: Row(
                           children: [
-                            Icon(
-                              Icons.heart_broken_rounded,
+                            const LikeButton(
                               size: 15.0,
-                              color: Colors.yellow.shade700,
-                            ),
-                            const SizedBox(
-                              width: 2.0,
                             ),
                             Text(
                               '${HomeCubit.get(context).likes[index]} Like',
@@ -220,13 +216,8 @@ class FeedsScreen extends StatelessWidget {
                       InkWell(
                         child: const Row(
                           children: [
-                            Icon(
-                              Icons.heart_broken_rounded,
+                            LikeButton(
                               size: 15.0,
-                              color: Colors.red,
-                            ),
-                            SizedBox(
-                              width: 2.0,
                             ),
                             Text(
                               'like',

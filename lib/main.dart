@@ -20,7 +20,6 @@ void main() async{
   bool checkUid = false;
   String? getUId = CacheHelper.getData(key:'uId');
   uId = getUId;
-  print(uId);
   if(uId != null){
     checkUid = true;
   }else{
