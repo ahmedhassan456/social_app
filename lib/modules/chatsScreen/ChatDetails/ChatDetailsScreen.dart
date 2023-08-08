@@ -16,7 +16,9 @@ class ChatDetailsScreen extends StatelessWidget {
     var messageController = TextEditingController();
     return Builder(
       builder: (context) {
-        HomeCubit.get(context).getMessages(receiverId: model!.uId.toString());
+        if(HomeCubit.get(context).messages.isEmpty){
+          HomeCubit.get(context).getMessages(receiverId: model!.uId.toString());
+        }
         return BlocConsumer<HomeCubit,HomeStates>(
           listener: (context,state){},
           builder: (context,state){
@@ -106,7 +108,8 @@ class ChatDetailsScreen extends StatelessWidget {
                                       dateTime: DateTime.now().toString(),
                                       text: messageController.text,
                                     );
-                                    messageController.text = '';
+
+                                    HomeCubit.get(context).getMessages(receiverId: model!.uId.toString());
                                   },
                                   icon: const Icon(
                                     Icons.send,

@@ -31,7 +31,6 @@ class HomeScreen extends StatelessWidget {
             IconButton(onPressed: (){
               HomeCubit.get(context).changeMood();
             }, icon: const Icon(Icons.sunny)),
-            IconButton(onPressed: (){}, icon: const Icon(Icons.search)),
           ],
         ),
         body: cubit.screens[cubit.currentIndex],
@@ -40,7 +39,7 @@ class HomeScreen extends StatelessWidget {
             BottomNavigationBarItem(icon: Icon(Icons.home),label: 'Home',),
             BottomNavigationBarItem(icon: Icon(Icons.chat),label: 'Chat',),
             BottomNavigationBarItem(icon: Icon(Icons.add),label: 'Post',),
-            BottomNavigationBarItem(icon: Icon(Icons.location_city), label: 'Users',),
+            BottomNavigationBarItem(icon: Icon(Icons.supervised_user_circle), label: 'Users',),
             BottomNavigationBarItem(icon: Icon(Icons.settings),label: 'Settings',),
           ],
           onTap: (index){
